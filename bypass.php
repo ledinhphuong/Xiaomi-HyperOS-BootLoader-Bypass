@@ -329,8 +329,9 @@ logf("Refactoring parameters...");
 
 $data = json_decode(decryptData($args), true);
 
-// V816 is the special identity for HyperOS in MIUI version
-$data["rom_version"] = str_replace("V816", "V14", $data["rom_version"]);
+// V816 is the special identity for HyperOS in MIUI version.
+// Using this command to find the correct verions of your devices: ./libraries/adb-darwin shell getprop | grep version
+$data["rom_version"] = str_replace("V816", "13", $data["rom_version"]);
 
 $data = json_encode($data);
 $sign = signData($data);

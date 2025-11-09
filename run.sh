@@ -8,6 +8,8 @@
 # @author: stev leibelt <artodeto@bazzline.net>
 # @since: 2024-01-31
 ####
+OS=$(uname)
+echo "Running on OS: $OS"
 
 function _build ()
 {
@@ -25,11 +27,18 @@ function _build ()
 
   if [[ ! -f "${PATH_OF_THIS_SCRIPT}"/libraries/adb ]];
   then
-    wget -O "${PATH_OF_THIS_SCRIPT}"/libraries/tools.zip https://dl.google.com/android/repository/platform-tools_r34.0.5-linux.zip
+    if [ "$OS" == "Darwin" ]; then
+      wget -O "${PATH_OF_THIS_SCRIPT}"/libraries/tools.zip https://dl.google.com/android/repository/platform-tools_r34.0.5-darwin.zip
+    else
+      wget -O "${PATH_OF_THIS_SCRIPT}"/libraries/tools.zip https://dl.google.com/android/repository/platform-tools_r34.0.5-linux.zip
+    fi
     unzip -d "${PATH_OF_THIS_SCRIPT}"/libraries "${PATH_OF_THIS_SCRIPT}"/libraries/tools.zip
     rm "${PATH_OF_THIS_SCRIPT}"/libraries/tools.zip
     mv "${PATH_OF_THIS_SCRIPT}"/libraries/platform-tools/* "${PATH_OF_THIS_SCRIPT}"/libraries/
     rmdir "${PATH_OF_THIS_SCRIPT}"/libraries/platform-tools
+    if [ "$OS" == "Darwin" ]; then
+      mv "${PATH_OF_THIS_SCRIPT}"/libraries/adb "${PATH_OF_THIS_SCRIPT}"/libraries/adb-darwin
+    fi
   fi
 }
 
